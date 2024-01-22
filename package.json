@@ -1,6 +1,7 @@
 {
   "name": "v47-tier3-team-34",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -24,7 +25,11 @@
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "postcss": "^8",
+    "supabase": "^1.131.5",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
+  },
+  "prisma":{
+    "seed":"ts-node prisma/seed.mjs"
   }
 }
