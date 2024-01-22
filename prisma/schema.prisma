@@ -10,7 +10,80 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//models
 model User{
   id Int @id @default(autoincrement())
-  name String
+  email String
+  password String
+  createdAt DateTime @default(dbgenerated("now"))
+  activityBoard ActivityBoard[]
+  comments Comment[]
 }
+
+model Comment{
+  id Int @id @default(autoincrement())
+  comment String
+  createdAt DateTime @default(dbgenerated("now"))
+
+  userId Int @unique
+  user User @relation(fields:[userId], references:[id])
+
+  cardId Int @unique
+  card ListCard @relation(fields:[cardId], references:[id])
+}
+
+model ActivityBoard{
+  id Int @id @default(autoincrement())
+  name String
+  createdAt DateTime @default(dbgenerated("now"))
+
+  activityList ActivityList[]
+
+  userId Int @unique
+  user User @relation(fields:[userId], references: [id])
+}
+
+model ActivityList{
+  id Int @id @default(autoincrement())
+  name String
+  priority Int
+
+  listCard ListCard[]
+
+  activityBoardId Int @unique
+  activityBoard ActivityBoard @relation(fields:[activityBoardId], references: [id])
+}
+
+model ListCard{
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  isActive String
+  dueDate DateTime @default(dbgenerated("now"))
+  reminder DateTime @default(dbgenerated("now"))
+
+  comments Comment[]
+  checklistItem ChecklistItem[]
+
+  activityListId Int @unique
+  activityList ActivityList @relation(fields:[activityListId], references:[id])
+}
+
+model ChecklistItem{
+  id Int @id @default(autoincrement())
+  name String
+  isChecked String
+  priority Int
+
+  listCardId Int @unique
+  listCard ListCard @relation(fields:[listCardId], references:[id])
+}
+
+// model CardActivity{
+//   id Int @id @default(autoincrement())
+//   activity String
+//   cardId Int
+//   createdAt DateTime @default(dbgenerated("now"))
+// }
+
+
